@@ -1,0 +1,14 @@
+language: php
+
+php:
+    - 5.6
+    - 7.0
+    - nightly
+    - hhvm
+
+install:
+    - composer install
+
+script:
+    - ./bin/phpunit --configuration app --coverage-text
+
