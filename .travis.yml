@@ -10,5 +10,6 @@ install:
     - composer install
 
 script:
+    - app/console security:check;
     - ./bin/phpunit --configuration app --coverage-text
 
