@@ -7,6 +7,7 @@ php:
     - hhvm
 
 install:
+    - mkdir -p app/var/jwt
     - openssl genrsa -out app/var/jwt/private.pem -aes256 4096 -passout pass:tutorial
     - openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem -passin pass:tutorial
     - composer install
