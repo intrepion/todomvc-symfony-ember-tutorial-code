@@ -136,11 +136,15 @@ class AppUserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers AppBundle\Entity\AppUser::addAppRole
-     * @expectedException \PHPUnit_Framework_Error
+     * @expectedException \InvalidArgumentException
      */
     public function testAddAppRoleWithNull()
     {
-        $this->appUser->addAppRole(null);
+        try {
+            $this->appUser->addAppRole(null);
+        } catch (\Exception $exception) {
+            throw new \InvalidArgumentException;
+        }
     }
 
     /**
