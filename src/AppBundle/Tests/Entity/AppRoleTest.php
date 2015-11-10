@@ -55,11 +55,7 @@ class AppRoleTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNameWithNull()
     {
-        try {
-            $this->appRole->setName(null);
-        } catch (\Exception $exception) {
-            throw new \InvalidArgumentException;
-        }
+        $this->appRole->setName(null);
     }
 
     /**
@@ -68,11 +64,7 @@ class AppRoleTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNameWithInteger()
     {
-        try {
-            $this->appRole->setName(4);
-        } catch (\Exception $exception) {
-            throw new \InvalidArgumentException;
-        }
+        $this->appRole->setName(4);
     }
 
     /**
