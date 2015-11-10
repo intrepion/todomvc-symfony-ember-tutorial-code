@@ -18,4 +18,13 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
+
+    /**
+     * @Route("/login_check", name="security_login_check")
+     * @codeCoverageIgnore
+     */
+    public function loginCheckAction()
+    {
+        // will never be executed
+    }
 }
