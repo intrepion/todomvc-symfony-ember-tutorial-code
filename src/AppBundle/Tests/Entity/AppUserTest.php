@@ -144,6 +144,8 @@ class AppUserTest extends \PHPUnit_Framework_TestCase
             $this->appUser->addAppRole(null);
         } catch (\Exception $exception) {
             throw new \InvalidArgumentException;
+        } catch (\Error $error) {
+            throw new \InvalidArgumentException;
         }
     }
 
