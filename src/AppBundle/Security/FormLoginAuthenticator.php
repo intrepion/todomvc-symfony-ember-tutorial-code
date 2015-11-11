@@ -26,21 +26,25 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
-    private $container;
+    private $router;
+
+    private $securityPasswordEncoder;
 
     /**
      * @InjectParams({
-     *     "container" = @Inject("service_container")
+     *     "router" = @Inject("router"),
+     *     "securityPasswordEncoder" = @Inject("security.password_encoder"),
      * })
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($router, $securityPasswordEncoder)
     {
-        $this->container = $container;
+        $this->router = $router;
+        $this->securityPasswordEncoder = $securityPasswordEncoder;
     }
 
     public function getCredentials(Request $request)
     {
-        if ($request->getPathInfo() != '/login_check') {
+        if ($request->getPathInfo() !== '/login_check') {
             return;
         }
 
@@ -56,16 +60,13 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $username = $credentials['username'];
-
-        return $userProvider->loadUserByUsername($username);
+        return $userProvider->loadUserByUsername($credentials['username']);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $plainPassword = $credentials['password'];
-        $encoder = $this->container->get('security.password_encoder');
-        if (!$encoder->isPasswordValid($user, $plainPassword)) {
+        if (false === $this->securityPasswordEncoder
+            ->isPasswordValid($user, $credentials['password'])) {
             // throw any AuthenticationException
             throw new BadCredentialsException();
         }
@@ -73,13 +74,13 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl()
     {
-        return $this->container->get('router')
+        return $this->router
             ->generate('homepage');
     }
 
     protected function getDefaultSuccessRedirectUrl()
     {
-        return $this->container->get('router')
+        return $this->router
             ->generate('homepage');
     }
 }
