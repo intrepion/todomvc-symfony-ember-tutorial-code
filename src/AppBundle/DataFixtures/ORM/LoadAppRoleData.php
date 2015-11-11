@@ -14,6 +14,9 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadAppRoleData extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $objectManager)
     {
         $appRole = new AppRole();
@@ -29,6 +32,9 @@ class LoadAppRoleData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('app_role-role_admin', $appRole);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getOrder()
     {
         return 1;

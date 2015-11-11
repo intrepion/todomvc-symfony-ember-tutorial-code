@@ -26,7 +26,8 @@ security:
             anonymous: ~
             knpu_guard:
                 authenticators:
-                    - app.form_login_authenticator
+                    - app.login_authenticator
+
             # activate different ways to authenticate
 
             # http_basic: ~
