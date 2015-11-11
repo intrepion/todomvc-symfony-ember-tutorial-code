@@ -27,6 +27,9 @@ security:
             knpu_guard:
                 authenticators:
                     - app.login_authenticator
+                    - app.json_web_token_authenticator
+                # by default, use the start() function from LoginAuthenticator
+                entry_point: app.login_authenticator
 
             # activate different ways to authenticate
 

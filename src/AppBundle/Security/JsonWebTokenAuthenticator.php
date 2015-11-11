@@ -2,18 +2,21 @@
 
 namespace AppBundle\Security;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+
 use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\DiExtraBundle\Annotation\InjectParams;
 use JMS\DiExtraBundle\Annotation\Service;
 
 use KnpU\Guard\AbstractGuardAuthenticator;
 
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -27,10 +30,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
 /**
- * @Service("app.login_authenticator")
+ * @Service("app.json_web_token_authenticator")
  */
-class LoginAuthenticator extends AbstractGuardAuthenticator
+class JsonWebTokenAuthenticator extends AbstractGuardAuthenticator
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
     /**
      * @var AuthenticationFailureHandlerInterface
      */
@@ -42,26 +50,29 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     private $handlerSuccess;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var JWTEncoderInterface
      */
-    private $userPasswordEncoder;
+    private $jwtEncoder;
 
     /**
      * @InjectParams({
+     *     "entityManager" = @Inject("doctrine.orm.entity_manager"),
      *     "handlerFailure" = @Inject("lexik_jwt_authentication.handler.authentication_failure"),
      *     "handlerSuccess" = @Inject("lexik_jwt_authentication.handler.authentication_success"),
-     *     "userPasswordEncoder" = @Inject("security.password_encoder"),
+     *     "jwtEncoder" = @Inject("lexik_jwt_authentication.jwt_encoder"),
      * })
      */
     public function __construct(
+        EntityManagerInterface $entityManager,
         AuthenticationFailureHandlerInterface $handlerFailure,
         AuthenticationSuccessHandlerInterface $handlerSuccess,
-        UserPasswordEncoderInterface $userPasswordEncoder
+        JWTEncoderInterface $jwtEncoder
     )
     {
+        $this->entityManager = $entityManager;
         $this->handlerFailure = $handlerFailure;
         $this->handlerSuccess = $handlerSuccess;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->jwtEncoder = $jwtEncoder;
     }
 
     /**
@@ -69,17 +80,15 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if ($request->getPathInfo() !== '/login_check') {
+        if (substr($request->getPathInfo(), 0, 5) !== '/api/') {
             return;
         }
 
-        $username = $request->request->get('_username');
-        $request->getSession()->set(Security::LAST_USERNAME, $username);
-        $password = $request->request->get('_password');
+        $payload = $this->jwtEncoder
+            ->decode($request->request->get('jsonWebToken'));
 
         return array(
-            'username' => $username,
-            'password' => $password,
+            'username' => $payload['username'],
         );
     }
 
@@ -96,11 +105,8 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        if (false === $this->userPasswordEncoder
-            ->isPasswordValid($user, $credentials['password'])) {
-            // throw any AuthenticationException
-            throw new BadCredentialsException();
-        }
+        // no need to check
+        return;
     }
 
     /**
@@ -116,7 +122,8 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return $this->handlerSuccess->onAuthenticationSuccess($request, $token);
+        // do nothing - let the request just continue!
+        return;
     }
 
     /**
