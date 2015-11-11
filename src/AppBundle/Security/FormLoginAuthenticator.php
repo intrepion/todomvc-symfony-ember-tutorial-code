@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Routing\RouterInterface;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 use Symfony\Component\Security\Core\Security;
@@ -26,20 +28,26 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
-    private $securityPasswordEncoder;
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $encoder;
 
     /**
      * @InjectParams({
      *     "router" = @Inject("router"),
-     *     "securityPasswordEncoder" = @Inject("security.password_encoder"),
+     *     "encoder" = @Inject("security.password_encoder"),
      * })
      */
-    public function __construct($router, $securityPasswordEncoder)
+    public function __construct(RouterInterface $router, UserPasswordEncoderInterface $encoder)
     {
         $this->router = $router;
-        $this->securityPasswordEncoder = $securityPasswordEncoder;
+        $this->encoder = $encoder;
     }
 
     public function getCredentials(Request $request)
@@ -65,7 +73,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        if (false === $this->securityPasswordEncoder
+        if (false === $this->encoder
             ->isPasswordValid($user, $credentials['password'])) {
             // throw any AuthenticationException
             throw new BadCredentialsException();
