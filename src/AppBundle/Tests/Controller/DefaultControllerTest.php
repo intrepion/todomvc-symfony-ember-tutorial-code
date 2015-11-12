@@ -6,17 +6,6 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    /**
-     * @covers AppBundle\Controller\DefaultController::indexAction
-     * @covers AppBundle\Security\LoginAuthenticator::__construct
-     * @covers AppBundle\Security\LoginAuthenticator::getCredentials
-     * @covers AppBundle\Security\LoginAuthenticator::getUser
-     * @covers AppBundle\Security\LoginAuthenticator::checkCredentials
-     * @covers AppBundle\Security\LoginAuthenticator::onAuthenticationFailure
-     * @covers AppBundle\Security\LoginAuthenticator::onAuthenticationSuccess
-     * @covers AppBundle\Security\LoginAuthenticator::supportsRememberMe
-     * @covers AppBundle\Security\LoginAuthenticator::start
-     */
     public function testIndex()
     {
         $this->loadFixtures(array(
