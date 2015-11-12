@@ -84,8 +84,14 @@ class JsonWebTokenAuthenticator extends AbstractGuardAuthenticator
             return;
         }
 
-        $payload = $this->jwtEncoder
-            ->decode($request->request->get('jsonWebToken'));
+        if ('' === $request->getContent()) {
+            $payload = $this->jwtEncoder
+                ->decode($request->query->get('jsonWebToken'));
+        } else {
+            $content = json_decode($request->getContent(), true);
+            $payload = $this->jwtEncoder
+                ->decode($content['jsonWebToken']);
+        }
 
         return array(
             'username' => $payload['username'],
