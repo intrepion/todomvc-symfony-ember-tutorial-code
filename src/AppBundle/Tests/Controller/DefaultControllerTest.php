@@ -11,6 +11,7 @@ class DefaultControllerTest extends WebTestCase
         $this->loadFixtures(array(
             'AppBundle\DataFixtures\ORM\LoadAppRoleData',
             'AppBundle\DataFixtures\ORM\LoadAppUserData',
+            'AppBundle\DataFixtures\ORM\LoadTodoData',
         ));
         $client = static::createClient();
 
@@ -35,6 +36,30 @@ class DefaultControllerTest extends WebTestCase
                 '_username' => 'user',
                 '_password' => 'user'
             )
+        );
+
+        $json = json_decode($client->getResponse()->getContent(), true);
+
+        $crawler = $client->request(
+            'GET',
+            '/api/todos/',
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                )
+            )
+        );
+
+        $this->assertContains(
+            '"title":"Finish creating example project","is_completed":true',
+            $client->getResponse()->getContent()
+        );
+        $this->assertContains(
+            '"title":"Finish writing tutorial","is_completed":false',
+            $client->getResponse()->getContent()
         );
     }
 }

@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new KnpU\GuardBundle\KnpUGuardBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
         );
 

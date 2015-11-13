@@ -39,7 +39,10 @@ class TodoController extends Controller
 
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Collection($todos, new TodoTransformer());
+        $resource = new Fractal\Resource\Collection(
+            $todos,
+            new TodoTransformer($this->get('jms_serializer'))
+        );
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -79,7 +82,10 @@ class TodoController extends Controller
 
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
+        $resource = new Fractal\Resource\Item(
+            $todo,
+            new TodoTransformer($this->get('jms_serializer'))
+        );
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -109,7 +115,10 @@ class TodoController extends Controller
         $this->getDoctrine()->getManager()->flush($todo);
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
+        $resource = new Fractal\Resource\Item(
+            $todo,
+            new TodoTransformer($this->get('jms_serializer'))
+        );
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -133,7 +142,10 @@ class TodoController extends Controller
         $this->getDoctrine()->getManager()->flush($todo);
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
+        $resource = new Fractal\Resource\Item(
+            $todo,
+            new TodoTransformer($this->get('jms_serializer'))
+        );
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
