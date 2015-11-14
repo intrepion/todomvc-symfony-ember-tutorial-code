@@ -39,10 +39,7 @@ class TodoController extends Controller
 
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Collection(
-            $todos,
-            new TodoTransformer($this->get('jms_serializer'))
-        );
+        $resource = new Fractal\Resource\Collection($todos, new TodoTransformer());
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -82,10 +79,7 @@ class TodoController extends Controller
 
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item(
-            $todo,
-            new TodoTransformer($this->get('jms_serializer'))
-        );
+        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -105,16 +99,13 @@ class TodoController extends Controller
         if (array_key_exists('title', $content['data']['attributes'])) {
             $todo->setTitle($content['data']['attributes']['title']);
         }
-        if (array_key_exists('is_completed', $content['data']['attributes'])) {
-            $todo->setIsCompleted($content['data']['attributes']['is_completed']);
+        if (array_key_exists('isCompleted', $content['data']['attributes'])) {
+            $todo->setIsCompleted($content['data']['attributes']['isCompleted']);
         }
         $this->getDoctrine()->getManager()->flush($todo);
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item(
-            $todo,
-            new TodoTransformer($this->get('jms_serializer'))
-        );
+        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }
@@ -138,10 +129,7 @@ class TodoController extends Controller
         $this->getDoctrine()->getManager()->flush($todo);
         // Display the todo
         $fractal = new Fractal\Manager();
-        $resource = new Fractal\Resource\Item(
-            $todo,
-            new TodoTransformer($this->get('jms_serializer'))
-        );
+        $resource = new Fractal\Resource\Item($todo, new TodoTransformer());
 
         return new JsonResponse($fractal->createData($resource)->toArray());
     }

@@ -53,7 +53,7 @@ class DefaultControllerTest extends WebTestCase
                         'type' => 'todos',
                         'attributes' => array(
                             'title' => 'Add a new todo',
-                            'is_completed'=> false,
+                            'isCompleted'=> false,
                         )
                     )
                 )
@@ -68,7 +68,7 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '"title":"Add a new todo","is_completed":false',
+            '"title":"Add a new todo","isCompleted":false',
             $client->getResponse()->getContent()
         );
 
@@ -86,7 +86,7 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '"title":"Add a new todo","is_completed":false',
+            '"title":"Add a new todo","isCompleted":false',
             $client->getResponse()->getContent()
         );
 
@@ -103,7 +103,7 @@ class DefaultControllerTest extends WebTestCase
                         'type' => 'todos',
                         'attributes' => array(
                             'title'=> 'Change a todo',
-                            'is_completed'=> true,
+                            'isCompleted'=> true,
                         )
                     )
                 )
@@ -111,7 +111,7 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '"title":"Change a todo","is_completed":true',
+            '"title":"Change a todo","isCompleted":true',
             $client->getResponse()->getContent()
         );
 
@@ -129,17 +129,17 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '"title":"Finish creating example project","is_completed":true',
+            '"title":"Finish creating example project","isCompleted":true',
             $client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            '"title":"Finish writing tutorial","is_completed":false',
+            '"title":"Finish writing tutorial","isCompleted":false',
             $client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            '"title":"Change a todo","is_completed":true',
+            '"title":"Change a todo","isCompleted":true',
             $client->getResponse()->getContent()
         );
 
@@ -170,17 +170,17 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '"title":"Finish creating example project","is_completed":true',
+            '"title":"Finish creating example project","isCompleted":true',
             $client->getResponse()->getContent()
         );
 
         $this->assertContains(
-            '"title":"Finish writing tutorial","is_completed":false',
+            '"title":"Finish writing tutorial","isCompleted":false',
             $client->getResponse()->getContent()
         );
 
         $this->assertNotContains(
-            '"title":"Change a todo","is_completed":true',
+            '"title":"Change a todo","isCompleted":true',
             $client->getResponse()->getContent()
         );
 
