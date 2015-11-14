@@ -41,6 +41,81 @@ class DefaultControllerTest extends WebTestCase
         $json = json_decode($client->getResponse()->getContent(), true);
 
         $crawler = $client->request(
+            'POST',
+            '/api/todos/',
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                    'data' => array(
+                        'type' => 'todos',
+                        'attributes' => array(
+                            'title' => 'Add a new todo',
+                            'is_completed'=> false,
+                        )
+                    )
+                )
+            )
+        );
+
+        $matches = array();
+        preg_match(
+            '/"id":(\d+),/',
+            $client->getResponse()->getContent(),
+            $matches
+        );
+
+        $this->assertContains(
+            '"title":"Add a new todo","is_completed":false',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
+            'GET',
+            '/api/todos/' . $matches[1],
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                )
+            )
+        );
+
+        $this->assertContains(
+            '"title":"Add a new todo","is_completed":false',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
+            'PATCH',
+            '/api/todos/' . $matches[1],
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                    'data' => array(
+                        'type' => 'todos',
+                        'attributes' => array(
+                            'title'=> 'Change a todo',
+                            'is_completed'=> true,
+                        )
+                    )
+                )
+            )
+        );
+
+        $this->assertContains(
+            '"title":"Change a todo","is_completed":true',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
             'GET',
             '/api/todos/',
             array(),
@@ -57,9 +132,75 @@ class DefaultControllerTest extends WebTestCase
             '"title":"Finish creating example project","is_completed":true',
             $client->getResponse()->getContent()
         );
+
         $this->assertContains(
             '"title":"Finish writing tutorial","is_completed":false',
             $client->getResponse()->getContent()
         );
+
+        $this->assertContains(
+            '"title":"Change a todo","is_completed":true',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
+            'DELETE',
+            '/api/todos/' . $matches[1],
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                )
+            )
+        );
+
+        $crawler = $client->request(
+            'GET',
+            '/api/todos/',
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'],
+                )
+            )
+        );
+
+        $this->assertContains(
+            '"title":"Finish creating example project","is_completed":true',
+            $client->getResponse()->getContent()
+        );
+
+        $this->assertContains(
+            '"title":"Finish writing tutorial","is_completed":false',
+            $client->getResponse()->getContent()
+        );
+
+        $this->assertNotContains(
+            '"title":"Change a todo","is_completed":true',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
+            'GET',
+            '/api/todos/',
+            array(),
+            array(),
+            array(),
+            json_encode(
+                array(
+                    'jsonWebToken' => $json['token'] . 'wrong',
+                )
+            )
+        );
+
+        $this->assertContains(
+            '{"code":401,"message":"Bad credentials"}',
+            $client->getResponse()->getContent()
+        );
+
     }
 }

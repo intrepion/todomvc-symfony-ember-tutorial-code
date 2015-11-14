@@ -17,6 +17,6 @@ class TodoTransformer extends Fractal\TransformerAbstract
 
 	public function transform(Todo $todo)
 	{
-        return json_decode($this->jmsSerializer->serialize($todo, 'json'));
+        return json_decode($this->jmsSerializer->serialize($todo, 'json'), true);
 	}
 }

@@ -105,12 +105,8 @@ class TodoController extends Controller
         if (array_key_exists('title', $content['data']['attributes'])) {
             $todo->setTitle($content['data']['attributes']['title']);
         }
-        if (array_key_exists('isCompleted', $content['data']['attributes'])) {
-            if ('false' === $content['data']['attributes']['isCompleted']) {
-                $todo->setIsCompleted(false);
-            } elseif ('true' === $content['data']['attributes']['isCompleted']) {
-                $todo->setIsCompleted(true);
-            }
+        if (array_key_exists('is_completed', $content['data']['attributes'])) {
+            $todo->setIsCompleted($content['data']['attributes']['is_completed']);
         }
         $this->getDoctrine()->getManager()->flush($todo);
         // Display the todo
