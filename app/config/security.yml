@@ -2,10 +2,26 @@
 # http://symfony.com/doc/current/book/security.html
 security:
 
+<<<<<<< HEAD
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory:
             memory: ~
+=======
+    encoders:
+        # Our user class and the algorithm we'll use to encode passwords
+        # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+        AppBundle\Entity\AppUser:
+            algorithm: bcrypt
+            cost: 15
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        # Simple example of loading users via Doctrine
+        # To load users from somewhere else: http://symfony.com/doc/current/cookbook/security/custom_provider.html
+        database_users:
+            entity: { class: AppBundle:AppUser, property: username }
+>>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,6 +31,16 @@ security:
 
         main:
             anonymous: ~
+<<<<<<< HEAD
+=======
+            knpu_guard:
+                authenticators:
+                    - app.login_authenticator
+                    - app.json_web_token_authenticator
+                # by default, use the start() function from LoginAuthenticator
+                entry_point: app.login_authenticator
+
+>>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
             # activate different ways to authenticate
 
             # http_basic: ~

@@ -1,0 +1,17 @@
+language: php
+
+php:
+    - 5.6
+    - 7.0
+    - nightly
+    - hhvm
+
+install:
+    - mkdir -p app/var/jwt
+    - openssl genrsa -passout pass:tutorial -out app/var/jwt/private.pem -aes256 4096
+    - openssl rsa -passin pass:tutorial -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem
+    - composer install
+
+script:
+    - app/console security:check;
+    - ./bin/phpunit --configuration app --coverage-text
