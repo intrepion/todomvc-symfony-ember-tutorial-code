@@ -115,7 +115,17 @@ class JsonWebTokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return $this->handlerFailure->onAuthenticationFailure($request, $exception);
+        return new JsonResponse(
+            array(
+                'errors' =>
+                array(
+                    array(
+                        'status' => 'Bad Request',
+                        'code' => 400,
+                    )
+                )
+            )
+        );
     }
 
     /**

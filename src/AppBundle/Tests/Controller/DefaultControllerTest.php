@@ -22,11 +22,26 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request(
             'POST',
+            '/login_check'
+        );
+
+        $this->assertContains(
+            '{"code":401,"message":"Bad credentials"}',
+            $client->getResponse()->getContent()
+        );
+
+        $crawler = $client->request(
+            'POST',
             '/login_check',
             array(
                 '_username' => 'user',
                 '_password' => 'notuser'
             )
+        );
+
+        $this->assertContains(
+            '{"code":401,"message":"Bad credentials"}',
+            $client->getResponse()->getContent()
         );
 
         $crawler = $client->request(
@@ -38,7 +53,22 @@ class DefaultControllerTest extends WebTestCase
             )
         );
 
+        $this->assertContains(
+            '{"token":',
+            $client->getResponse()->getContent()
+        );
+
         $json = json_decode($client->getResponse()->getContent(), true);
+
+        $crawler = $client->request(
+            'POST',
+            '/api/todos/'
+        );
+
+        $this->assertContains(
+            '"status":"Bad Request","code":400',
+            $client->getResponse()->getContent()
+        );
 
         $crawler = $client->request(
             'POST',
@@ -198,7 +228,7 @@ class DefaultControllerTest extends WebTestCase
         );
 
         $this->assertContains(
-            '{"code":401,"message":"Bad credentials"}',
+            '"status":"Bad Request","code":400',
             $client->getResponse()->getContent()
         );
 
