@@ -2,32 +2,24 @@
 
 namespace AppBundle\Tests\Controller;
 
-<<<<<<< HEAD
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-=======
 use Liip\FunctionalTestBundle\Test\WebTestCase;
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
 
 class DefaultControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-<<<<<<< HEAD
-=======
         $this->loadFixtures(array(
             'AppBundle\DataFixtures\ORM\LoadAppRoleData',
             'AppBundle\DataFixtures\ORM\LoadAppUserData',
             'AppBundle\DataFixtures\ORM\LoadTodoData',
         ));
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
+
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
-<<<<<<< HEAD
-=======
 
         $crawler = $client->request(
             'POST',
@@ -240,7 +232,5 @@ class DefaultControllerTest extends WebTestCase
             '"status":"Bad Request","code":400',
             $client->getResponse()->getContent()
         );
-
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
     }
 }

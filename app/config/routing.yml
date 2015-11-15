@@ -1,10 +1,7 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
-<<<<<<< HEAD
-=======
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix: /doc
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94

@@ -52,11 +52,7 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-<<<<<<< HEAD
-        driver:   pdo_mysql
-=======
         driver:   pdo_pgsql
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -82,8 +78,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-<<<<<<< HEAD
-=======
 
 jms_di_extra:
     locations:
@@ -98,4 +92,3 @@ lexik_jwt_authentication:
     public_key_path: %jwt_public_key_path%
     pass_phrase: %jwt_key_pass_phrase%
     token_ttl: %jwt_token_ttl%
->>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
