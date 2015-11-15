@@ -3,10 +3,14 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+<<<<<<< HEAD
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+=======
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+>>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -21,6 +25,8 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
+<<<<<<< HEAD
+=======
 
     /**
      * @Route("/login_check", name="security_login_check")
@@ -30,4 +36,5 @@ class DefaultController extends Controller
     {
         // will never be executed
     }
+>>>>>>> a112b0bb58c938271078e9d7ed7640f3f71afb94
 }
